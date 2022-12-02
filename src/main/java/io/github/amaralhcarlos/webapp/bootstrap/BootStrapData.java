@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 
 import io.github.amaralhcarlos.webapp.model.Author;
 import io.github.amaralhcarlos.webapp.model.Book;
+import io.github.amaralhcarlos.webapp.model.Publisher;
 import io.github.amaralhcarlos.webapp.repository.AuthorRepository;
 import io.github.amaralhcarlos.webapp.repository.BookRepository;
+import io.github.amaralhcarlos.webapp.repository.PublisherRepository;
 
 @Component
 public class BootStrapData implements CommandLineRunner {
@@ -22,6 +24,8 @@ public class BootStrapData implements CommandLineRunner {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired PublisherRepository publisherRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -36,8 +40,15 @@ public class BootStrapData implements CommandLineRunner {
         authors.add(authorRepository.save(author1));
         authors.add(authorRepository.save(author2));
 
+        Publisher publisher = publisherRepository.save(Publisher.builder().name("Pearson").city("Campinas").state("SP").build());
+
         book1.setAuthors(authors);
-        bookRepository.save(book1);
+        book1.setPublisher(publisher);
+        Book finalBook = bookRepository.save(book1);
+
+        publisher.getBooks().add(finalBook);
+
+        publisherRepository.save(publisher);
 
         System.out.println("Authors in database: " + authorRepository.count());
 
