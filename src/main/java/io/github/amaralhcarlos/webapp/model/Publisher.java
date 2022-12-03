@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 @ToString(onlyExplicitlyIncluded = true)
@@ -56,6 +58,7 @@ public class Publisher {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "publisher_id")
     @Builder.Default
+    @JsonBackReference("books")
     private Set<Book> books = new HashSet<>();
 
 }

@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 
@@ -41,11 +43,14 @@ public class Book {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     @Builder.Default
+    @ToString.Include
+    @JsonManagedReference("authors")
     private Set<Author> authors = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @Builder.Default
     @ToString.Include
+    @JsonManagedReference("publisher")
     private Publisher publisher = new Publisher();
 
 }
